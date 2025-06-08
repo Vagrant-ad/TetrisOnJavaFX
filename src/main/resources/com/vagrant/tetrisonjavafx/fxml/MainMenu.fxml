@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="rootMenuBox" alignment="CENTER" prefHeight="800.0" prefWidth="550.0" spacing="30.0" styleClass="main-menu-background" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="50.0" />
+    </padding>
+    <Label fx:id="titleLabel" prefHeight="377.0" prefWidth="429.0" styleClass="game-title-label" text="俄罗斯方块" />
+    <Button fx:id="playButton" mnemonicParsing="false" onAction="#handlePlayButtonAction" prefWidth="200" styleClass="pixel-button" text="开始游戏" />
+    <Button fx:id="recordButton" mnemonicParsing="false" onAction="#handleRecordButtonAction" prefWidth="200" styleClass="pixel-button" text="历史游戏" />
+    <Button fx:id="exitButton" mnemonicParsing="false" onAction="#handleExitButtonAction" prefWidth="200" styleClass="pixel-button" text="退出游戏" />
+
+</VBox>
