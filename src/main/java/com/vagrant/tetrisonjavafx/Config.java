@@ -23,6 +23,13 @@ public class Config {
     public static final long DAS_DELAY = 150_000_000L; //DAS延迟自动平移时间
     public static final long ARR_GAPTIME = 30_000_000L; //自动重复率ARR
 
+    public static final int LINES_PER_LEVEL = 10; //每消除10行升一级
+    public static final double[] LEVEL_SPEED = {
+            //共20级
+            1.0, 0.8, 0.65, 0.5, 0.4, 0.3, 0.2, 0.15, 0.1, 0.08,
+            0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02
+    };
+
     public static final Color BOARD_BACKGROUND_COLOR = Color.rgb(20, 20, 30); // 游戏背景色
     public static final Color GRID_LINE_COLOR = Color.rgb(50, 50, 70); // 网格线颜色
 

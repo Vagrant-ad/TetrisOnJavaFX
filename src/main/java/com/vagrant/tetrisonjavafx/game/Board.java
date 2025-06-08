@@ -28,7 +28,7 @@ public class Board {
             grid[x][y] = color;
     }
 
-    public int clearLine(ScoreManager scoreManager) {
+    public int clearLine() {
         int linesCleared = 0;
         for (int y = Config.BOARD_HEIGHT - 1; y >= 0; y--) {
             boolean lineFull = true;
@@ -51,9 +51,6 @@ public class Board {
                 }
                 y++;//当前行消去后上一行下移
             }
-        }
-        if (scoreManager != null && linesCleared > 0) {
-            scoreManager.addScore(linesCleared);
         }
         return linesCleared;
     }

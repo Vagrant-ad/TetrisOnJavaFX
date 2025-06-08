@@ -17,9 +17,12 @@ public class GameLogic {
 
     private AnimationTimer gameLoop;
     private long lastDropTime;
-    private double gapTime = Config.INITIAL_DROP_GAPTIME;
+    private double gapTime = Config.LEVEL_SPEED[0];
     private boolean isPaused;
     private boolean isGameOver;
+
+    private int level;
+    private int linesClearedThisLevel;
 
     private final Set<KeyCode> keys = new HashSet<>();
 
@@ -51,6 +54,8 @@ public class GameLogic {
                     //除以10亿纳秒得秒，下落间隔除以下落倍速
                     if (!moveTetrominoDown()) {//方块已经无法下移即到底
                         lockTetromino();
+                        int linesCleared = board.clearLine();
+                        updateLevelAndScore(linesCleared);
                         buildNewTetromino();
                         if (isGameOver) {
                             stopGame();
@@ -208,7 +213,18 @@ public class GameLogic {
                 board.placeBlock(x, y, curTetromino.getShape().color);
             }
         }
-        board.clearLine(scoreManager);
+    }
+    private void updateLevelAndScore(int linesCleared){
+        if(linesCleared > 0){
+            scoreManager.addScore(linesCleared);
+            linesClearedThisLevel += linesCleared;
+            if(linesClearedThisLevel >= Config.LINES_PER_LEVEL){
+                level++;
+                linesClearedThisLevel -= Config.LINES_PER_LEVEL;
+                int speedIndex = Math.min(level,Config.LEVEL_SPEED.length - 1);
+                gapTime = Config.LEVEL_SPEED[speedIndex];
+            }
+        }
     }
 
     public void startGame() {
@@ -230,7 +246,9 @@ public class GameLogic {
         scoreManager.resetCurScore();
         isGameOver = false;
         isPaused = false;
-        gapTime = Config.INITIAL_DROP_GAPTIME;
+        level = 0;
+        linesClearedThisLevel = 0;
+        gapTime = Config.LEVEL_SPEED[level];
         keys.clear();
         sIsPressed = false;
         speedMuti = 1.0;
