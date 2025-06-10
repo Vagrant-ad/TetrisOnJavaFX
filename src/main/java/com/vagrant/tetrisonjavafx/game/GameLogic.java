@@ -6,6 +6,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class GameLogic {
@@ -71,11 +72,7 @@ public class GameLogic {
     }
 
     public void buildNewTetromino() {
-        if (nexTetromino == null) {
-            curTetromino = new Tetromino(TetrominoShape.getRandomShape());
-        } else {
-            curTetromino = nexTetromino;
-        }
+        curTetromino = Objects.requireNonNullElseGet(nexTetromino, () -> new Tetromino(TetrominoShape.getRandomShape()));
         nexTetromino = new Tetromino(TetrominoShape.getRandomShape());
         speedMuti = 1.0;//重置速度
         if (!canPlace(curTetromino.getCurX(), curTetromino.getCurY(), curTetromino.getLocations())) {
@@ -90,14 +87,14 @@ public class GameLogic {
             doOrCancelPause();
             return;
         }
-        if((keyCode == KeyCode.A || keyCode == KeyCode.D)&& lastMoveKey == null) {
+        if ((keyCode == KeyCode.A || keyCode == KeyCode.D) && lastMoveKey == null) {
             lastMoveKey = keyCode;
             moveStartTime = System.nanoTime();
             lastMoveTime = System.nanoTime();
-            if(keyCode == KeyCode.A){
-                moveTetromino(-1,0);
-            }else{
-                moveTetromino(1,0);
+            if (keyCode == KeyCode.A) {
+                moveTetromino(-1);
+            } else {
+                moveTetromino(1);
             }
         }
         keys.add(keyCode);
@@ -129,7 +126,7 @@ public class GameLogic {
             speedMuti = 1.0;
         }
         //正在处理的移动键A和D
-        if(keyCode == lastMoveKey){
+        if (keyCode == lastMoveKey) {
             lastMoveKey = null;
             moveStartTime = 0;
         }
@@ -142,28 +139,26 @@ public class GameLogic {
             }
         }
         //DAS和ARR逻辑
-        if(lastMoveKey !=null && keys.contains(lastMoveKey)){
-            if(now - moveStartTime > Config.DAS_DELAY && now -lastMoveTime > Config.ARR_GAPTIME){
-                if(lastMoveKey == KeyCode.A){
-                    moveTetromino(-1,0);
-                }else if(lastMoveKey == KeyCode.D){
-                    moveTetromino(1,0);
+        if (lastMoveKey != null && keys.contains(lastMoveKey)) {
+            if (now - moveStartTime > Config.DAS_DELAY && now - lastMoveTime > Config.ARR_GAPTIME) {
+                if (lastMoveKey == KeyCode.A) {
+                    moveTetromino(-1);
+                } else if (lastMoveKey == KeyCode.D) {
+                    moveTetromino(1);
                 }
                 lastMoveTime = now;
             }
         }
     }
 
-    private void moveTetromino(int dx, int dy) {
+    private void moveTetromino(int dx) {
         int xx = curTetromino.getCurX() + dx;
-        int yy = curTetromino.getCurY() + dy;
+        int yy = curTetromino.getCurY();
         if (canPlace(xx, yy, curTetromino.getLocations())) {
             if (dx < 0)
                 curTetromino.moveLeft();
             if (dx > 0)
                 curTetromino.moveRight();
-            if (dy > 0)//s键主动下落
-                curTetromino.moveDown();
         }
     }
 
@@ -180,6 +175,7 @@ public class GameLogic {
     }
 
     private boolean canPlace(int x, int y, int[][] locs) {
+        //判断该位置是否能放置方块
         for (int[] block : locs) {
             int xx = block[0] + x;
             int yy = block[1] + y;
@@ -209,19 +205,20 @@ public class GameLogic {
             int x = curTetromino.getCurX() + loc[0];
             int y = curTetromino.getCurY() + loc[1];
 
-            if(y >=0) {
+            if (y >= 0) {
                 board.placeBlock(x, y, curTetromino.getShape().color);
             }
         }
     }
-    private void updateLevelAndScore(int linesCleared){
-        if(linesCleared > 0){
+
+    private void updateLevelAndScore(int linesCleared) {
+        if (linesCleared > 0) {
             scoreManager.addScore(linesCleared);
             linesClearedThisLevel += linesCleared;
-            if(linesClearedThisLevel >= Config.LINES_PER_LEVEL){
+            if (linesClearedThisLevel >= Config.LINES_PER_LEVEL) {
                 level++;
                 linesClearedThisLevel -= Config.LINES_PER_LEVEL;
-                int speedIndex = Math.min(level,Config.LEVEL_SPEED.length - 1);
+                int speedIndex = Math.min(level, Config.LEVEL_SPEED.length - 1);
                 gapTime = Config.LEVEL_SPEED[speedIndex];
             }
         }

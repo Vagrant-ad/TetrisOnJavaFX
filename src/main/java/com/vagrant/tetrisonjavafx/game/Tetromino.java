@@ -44,7 +44,6 @@ public class Tetromino {
         if(rotationNum < 0) {
             rotationNum = shape.getNumOfRotation() - 1;
         }
-
     }
 
     public void render(GraphicsContext gc) {

@@ -2,7 +2,7 @@ package com.vagrant.tetrisonjavafx;
 
 import javafx.scene.paint.Color;
 
-import java.nio.file.Files;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -15,9 +15,8 @@ public class Config {
     public static final int NEXT_BLOCK_AREA_WIDTH = 4 * BLOCK_SIZE; // 下一个方块显示区域宽度
     public static final int NEXT_BLOCK_AREA_HEIGHT = 4 * BLOCK_SIZE; // 下一个方块显示区域高度
 
-    public static final double INITIAL_DROP_GAPTIME = 0.8; // 初始下落间隔
     public static final double DROP_MULTIPLIER_STAGE1 = 5.0;  // S键一段加速倍率
-    public static final double DROP_MULTIPLIER_STAGE2 = 10.0; // S键二段加速倍率
+    public static final double DROP_MULTIPLIER_STAGE2 = 15.0; // S键二段加速倍率
     public static final long DROP_STAGE2_THRESHOLD = 300_000_000L; // S键长按进入二段加速的阈值 (0.3秒)
 
     public static final long DAS_DELAY = 150_000_000L; //DAS延迟自动平移时间
@@ -26,7 +25,7 @@ public class Config {
     public static final int LINES_PER_LEVEL = 10; //每消除10行升一级
     public static final double[] LEVEL_SPEED = {
             //共20级
-            1.0, 0.8, 0.65, 0.5, 0.4, 0.3, 0.2, 0.15, 0.1, 0.08,
+            0.9, 0.8, 0.65, 0.5, 0.4, 0.3, 0.2, 0.15, 0.1, 0.08,
             0.07, 0.06, 0.05, 0.05, 0.04, 0.04, 0.03, 0.03, 0.02, 0.02
     };
 
